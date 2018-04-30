@@ -23,7 +23,7 @@ RUN apt-get update -y && apt-get upgrade -y \
     unzip \
     zip \
     ca-certificates \
-    --no-install-recommends \      
+    --no-install-recommends \
     && apt-get -y autoremove \
     && apt-get clean
 
@@ -45,7 +45,11 @@ RUN wget -O- "http://downloads.lightbend.com/scala/2.12.6/scala-2.12.6.tgz" \
     | tar xzf - -C /usr/local --strip-components=1
 
 # Install gradle
-ENV GRADLE_VERSION=3.4.1
-RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
-    
+ENV GRADLE_VERSION=4.7
+ENV GRADLE_HOME=/opt/gradle/gradle-${GRADLE_VERSION}
+ENV PATH="${GRADLE_HOME}/bin:${PATH}"
+
+RUN wget -O gradle.zip https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
+    && mkdir /opt/gradle && unzip -d /opt/gradle gradle.zip
+
 WORKDIR /root
